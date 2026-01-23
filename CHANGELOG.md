@@ -2,6 +2,123 @@
 
 # Changelog
 
+## [0.95.0](https://github.com/tiborsimko/reana-ui/compare/v0.9.4...0.95.0) (2026-01-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gitlab:** The REST API endpoint `gitlab_projects` now includes pagination details.
+
+### Build
+
+* **deps:** bump axios and fix prettier CI setup ([#447](https://github.com/tiborsimko/reana-ui/issues/447)) ([5e742a2](https://github.com/tiborsimko/reana-ui/commit/5e742a22cb45f163ebfa741bcd190d97312fe000))
+* **deps:** bump babel, js-yaml, node-forge & brace-expansion ([#455](https://github.com/tiborsimko/reana-ui/issues/455)) ([e3a33a2](https://github.com/tiborsimko/reana-ui/commit/e3a33a28b7e1d473fdd014734df6948b48787187))
+* **deps:** bump lodash to 4.17.23 ([#463](https://github.com/tiborsimko/reana-ui/issues/463)) ([46d4890](https://github.com/tiborsimko/reana-ui/commit/46d48906c9c0bdca975fb0ce250a580ee29baac2))
+* **deps:** upgrade node, yarn and nginx ([#458](https://github.com/tiborsimko/reana-ui/issues/458)) ([e98bfe0](https://github.com/tiborsimko/reana-ui/commit/e98bfe0d65ddf8b16d3c242d288d0762a22e80ac)), closes [#456](https://github.com/tiborsimko/reana-ui/issues/456)
+* **docker:** fix FromAsCasing warning ([#411](https://github.com/tiborsimko/reana-ui/issues/411)) ([b203d93](https://github.com/tiborsimko/reana-ui/commit/b203d93f854d89b302c712b5734cda0b5aabdbb9)), closes [#410](https://github.com/tiborsimko/reana-ui/issues/410)
+* **docker:** fix FromAsCasing warning ([#425](https://github.com/tiborsimko/reana-ui/issues/425)) ([0e685f1](https://github.com/tiborsimko/reana-ui/commit/0e685f14f6ef7695b6ca7de6b1bf922e889005a3))
+* **docker:** fix FromAsCasing warning ([#425](https://github.com/tiborsimko/reana-ui/issues/425)) ([63f2e31](https://github.com/tiborsimko/reana-ui/commit/63f2e31c230aeb3d74ff12c9aab07981e663a1f5)), closes [#410](https://github.com/tiborsimko/reana-ui/issues/410)
+* fix build ([2e6ccbc](https://github.com/tiborsimko/reana-ui/commit/2e6ccbcc8c4c7ff8e0e0879072ecf7da8a8913a2))
+* **package:** require jsroot&lt;7.6.0 ([#399](https://github.com/tiborsimko/reana-ui/issues/399)) ([d53b290](https://github.com/tiborsimko/reana-ui/commit/d53b290f7264e5da8e7b31c6ef2015748146e2f0))
+* **package:** update yarn.lock ([#399](https://github.com/tiborsimko/reana-ui/issues/399)) ([10e41b1](https://github.com/tiborsimko/reana-ui/commit/10e41b17cc45cb43fafa5f755c2730aa6c047933))
+* **package:** upgrade to yarn v4 and eslint v9 ([#447](https://github.com/tiborsimko/reana-ui/issues/447)) ([ffbabe0](https://github.com/tiborsimko/reana-ui/commit/ffbabe04e9d6c5b8db79f88064f36f4128b3af68)), closes [#346](https://github.com/tiborsimko/reana-ui/issues/346)
+
+
+### Features
+
+* **file-preview:** add text previews for out, sh, and err files ([#439](https://github.com/tiborsimko/reana-ui/issues/439)) ([0874498](https://github.com/tiborsimko/reana-ui/commit/0874498c8d9609c226407c0d0a9ca09a060a95dd)), closes [#438](https://github.com/tiborsimko/reana-ui/issues/438)
+* **file-preview:** allow preview of gherkin feature files ([#412](https://github.com/tiborsimko/reana-ui/issues/412)) ([77d55b7](https://github.com/tiborsimko/reana-ui/commit/77d55b702ba12fb4eafe1b7191275e767a825d49))
+* **footer:** link privacy notice to configured URL ([#393](https://github.com/tiborsimko/reana-ui/issues/393)) ([f0edde6](https://github.com/tiborsimko/reana-ui/commit/f0edde6bf4ceb8a92915446d0353df009919b8f3)), closes [#392](https://github.com/tiborsimko/reana-ui/issues/392)
+* **gitlab:** add filtering for GitLab project lists ([#403](https://github.com/tiborsimko/reana-ui/issues/403)) ([c2e8b6c](https://github.com/tiborsimko/reana-ui/commit/c2e8b6c843eaa01c4191676789bb21a58291cf30))
+* **gitlab:** add pagination for GitLab project lists ([#403](https://github.com/tiborsimko/reana-ui/issues/403)) ([d403634](https://github.com/tiborsimko/reana-ui/commit/d4036342dd5c2e89c840da15f993b112a8ef2fa6))
+* **progress:** add circular progress bar in workflow list page ([#394](https://github.com/tiborsimko/reana-ui/issues/394)) ([7f4f1ac](https://github.com/tiborsimko/reana-ui/commit/7f4f1ac456dcf5602ed3d0e37bcdb8e3447a17eb))
+* **sessions:** add modal for choosing session environment ([#405](https://github.com/tiborsimko/reana-ui/issues/405)) ([7a83b20](https://github.com/tiborsimko/reana-ui/commit/7a83b206cd8d3c7f20f511780519ee8192c83ef5))
+* **signin:** add EOSC EU Node AAI authentication ([#444](https://github.com/tiborsimko/reana-ui/issues/444)) ([bd31f40](https://github.com/tiborsimko/reana-ui/commit/bd31f40ade36c55ff9afb5ede9bda2aef3190cc5))
+* **ui:** add dropdowns for filtering shared workflows ([#375](https://github.com/tiborsimko/reana-ui/issues/375)) ([ea20030](https://github.com/tiborsimko/reana-ui/commit/ea20030adabe79d8ee55b889f7381ae75c164981)), closes [#367](https://github.com/tiborsimko/reana-ui/issues/367)
+* **ui:** add workflow sharing modal ([#375](https://github.com/tiborsimko/reana-ui/issues/375)) ([7722ff3](https://github.com/tiborsimko/reana-ui/commit/7722ff385d24680d1c8fc3007c7fe65a94b48974)), closes [#651](https://github.com/tiborsimko/reana-ui/issues/651)
+* **ui:** make details available for shared workflows ([#375](https://github.com/tiborsimko/reana-ui/issues/375)) ([089853f](https://github.com/tiborsimko/reana-ui/commit/089853fc2a3347baf0fc4d260d3915293f9913c1))
+* **ui:** persist workflow page tabs and filters in URLs ([#440](https://github.com/tiborsimko/reana-ui/issues/440)) ([10f2bcd](https://github.com/tiborsimko/reana-ui/commit/10f2bcd2803cb65c0e8551daa344ee715aad335f)), closes [#437](https://github.com/tiborsimko/reana-ui/issues/437)
+* **workflow-badges:** add Dask dashboard icon ([#417](https://github.com/tiborsimko/reana-ui/issues/417)) ([e4c024b](https://github.com/tiborsimko/reana-ui/commit/e4c024b755ecb0e5bc01516a8104425aa661832d)), closes [#415](https://github.com/tiborsimko/reana-ui/issues/415)
+* **workflow-details:** add service logs tab ([#426](https://github.com/tiborsimko/reana-ui/issues/426)) ([adee81c](https://github.com/tiborsimko/reana-ui/commit/adee81c0cc7df5ef5cb10c916df3c92b7e2e6d28))
+* **workflow-details:** redesign subtler step duration badge ([#461](https://github.com/tiborsimko/reana-ui/issues/461)) ([d3e7662](https://github.com/tiborsimko/reana-ui/commit/d3e766250703dc99c764363f21168a30ff2ee66d)), closes [#352](https://github.com/tiborsimko/reana-ui/issues/352)
+* **workflow-list:** add interactive session filter ([#436](https://github.com/tiborsimko/reana-ui/issues/436)) ([093f532](https://github.com/tiborsimko/reana-ui/commit/093f5328c9e72da2a5cc0ea10d93c5daeb4da02b)), closes [#435](https://github.com/tiborsimko/reana-ui/issues/435)
+* **workflow-list:** add more pagination size options ([#442](https://github.com/tiborsimko/reana-ui/issues/442)) ([a510331](https://github.com/tiborsimko/reana-ui/commit/a510331b812e8c54e1166c68b64889e51db3f90e))
+* **workflow-list:** redesign subtler progress bar and badges ([#394](https://github.com/tiborsimko/reana-ui/issues/394)) ([660584e](https://github.com/tiborsimko/reana-ui/commit/660584e53d4c63d100bad73c39e674af12022824))
+* **workflow-list:** unify badge style and remove nested links ([#394](https://github.com/tiborsimko/reana-ui/issues/394)) ([d623ff4](https://github.com/tiborsimko/reana-ui/commit/d623ff44e1fb3aa6505597c2e70bd6bd674a7e6c))
+
+
+### Bug fixes
+
+* **gitlab:** redirect user to repository after clicking on name ([#406](https://github.com/tiborsimko/reana-ui/issues/406)) ([9b0c589](https://github.com/tiborsimko/reana-ui/commit/9b0c589eb3421a47d2443cc10facd877e88f4d7b)), closes [#356](https://github.com/tiborsimko/reana-ui/issues/356)
+* **launcher:** remove dollar sign in generated Markdown ([#389](https://github.com/tiborsimko/reana-ui/issues/389)) ([8ad4afd](https://github.com/tiborsimko/reana-ui/commit/8ad4afdf9053a3736e4df036646aa114260f79d9))
+* **profile:** hide GitLab box when not configured by the admins ([#430](https://github.com/tiborsimko/reana-ui/issues/430)) ([7a657dc](https://github.com/tiborsimko/reana-ui/commit/7a657dce046ede543b67f4a86da709bb4f89256d)), closes [#428](https://github.com/tiborsimko/reana-ui/issues/428)
+* **progress:** update failed workflows duration using finish time ([#387](https://github.com/tiborsimko/reana-ui/issues/387)) ([809fdc5](https://github.com/tiborsimko/reana-ui/commit/809fdc5e8b35ef03490921d15febcdb819fa6df7)), closes [#386](https://github.com/tiborsimko/reana-ui/issues/386)
+* **router:** show 404 page for invalid URLs ([#382](https://github.com/tiborsimko/reana-ui/issues/382)) ([c18e81d](https://github.com/tiborsimko/reana-ui/commit/c18e81ded87db6fbbbf06237d747f9655e0e5cc9)), closes [#379](https://github.com/tiborsimko/reana-ui/issues/379)
+* **signin:** display OAuth error messages in UI ([#444](https://github.com/tiborsimko/reana-ui/issues/444)) ([d2ba0eb](https://github.com/tiborsimko/reana-ui/commit/d2ba0ebfbc3daa1758b08252ac3ed10973dca326))
+* **signin:** reload page after OAuth signin to fetch user data ([#444](https://github.com/tiborsimko/reana-ui/issues/444)) ([cb267e9](https://github.com/tiborsimko/reana-ui/commit/cb267e9079788534569657416105b44e8a4908ce))
+* **ui:** fix workflow sharing interface after UI changes ([#375](https://github.com/tiborsimko/reana-ui/issues/375)) ([83eee02](https://github.com/tiborsimko/reana-ui/commit/83eee025b560c97467325747c2a95319ec6bd04e))
+* **ui:** show Jupyter badge only after notebook is running ([#416](https://github.com/tiborsimko/reana-ui/issues/416)) ([35c98b5](https://github.com/tiborsimko/reana-ui/commit/35c98b51ed52db70f03462c44a26533e64cab644)), closes [#408](https://github.com/tiborsimko/reana-ui/issues/408)
+* **workflow-list:** show shared workflows for brand new users ([#429](https://github.com/tiborsimko/reana-ui/issues/429)) ([c53b4ed](https://github.com/tiborsimko/reana-ui/commit/c53b4edbeeabefd1d88b5080acbfa1ea64775edc)), closes [#413](https://github.com/tiborsimko/reana-ui/issues/413)
+* **workflow-list:** show Welcome page for users without tokens ([#444](https://github.com/tiborsimko/reana-ui/issues/444)) ([ee44432](https://github.com/tiborsimko/reana-ui/commit/ee44432051b03c0859249c0889b8b013abeedb2e))
+
+
+### Code refactoring
+
+* **docs:** move from reST to Markdown ([#391](https://github.com/tiborsimko/reana-ui/issues/391)) ([8d58277](https://github.com/tiborsimko/reana-ui/commit/8d582775ab1a0779601e37f9b9498f76cc5ce4cd))
+* **workflow-badges:** centralise list and details components ([#394](https://github.com/tiborsimko/reana-ui/issues/394)) ([fa65bb5](https://github.com/tiborsimko/reana-ui/commit/fa65bb5df8d8ec498a6c2db4c836c5e23552efbd)), closes [#151](https://github.com/tiborsimko/reana-ui/issues/151) [#395](https://github.com/tiborsimko/reana-ui/issues/395)
+
+
+### Continuous integration
+
+* **actions:** update GitHub actions due to Node 16 deprecation ([#401](https://github.com/tiborsimko/reana-ui/issues/401)) ([43ced0c](https://github.com/tiborsimko/reana-ui/commit/43ced0c02c16f90c3f637e6b4c31feec817277d6))
+* **actions:** upgrade to Ubuntu 24.04 and Python 3.12 ([#409](https://github.com/tiborsimko/reana-ui/issues/409)) ([1561a4b](https://github.com/tiborsimko/reana-ui/commit/1561a4b4e4944ecc19f5bca34041c41155655d4f))
+* add eslint job ([d4e456d](https://github.com/tiborsimko/reana-ui/commit/d4e456d263599276b73c8ec8ca1e405a4de825be))
+* add hadolint linter ([3c94e25](https://github.com/tiborsimko/reana-ui/commit/3c94e2534384f41a054bbbeab4df3506f967c0f1))
+* added github actions workflow ([ad531b0](https://github.com/tiborsimko/reana-ui/commit/ad531b0a83b5d72fff1b5d64cc55e491a3ced686))
+* **commitlint:** addition of commit message linter ([#380](https://github.com/tiborsimko/reana-ui/issues/380)) ([1c9ec74](https://github.com/tiborsimko/reana-ui/commit/1c9ec7493a28c8c482acb6a90e4c4baf16bf9507))
+* **commitlint:** allow release commit style ([#400](https://github.com/tiborsimko/reana-ui/issues/400)) ([426a2b0](https://github.com/tiborsimko/reana-ui/commit/426a2b0c3c401c52a3ad39fa7d5c5d3834eb2082))
+* **commitlint:** check for the presence of concrete PR number ([#390](https://github.com/tiborsimko/reana-ui/issues/390)) ([e938f60](https://github.com/tiborsimko/reana-ui/commit/e938f60440bb8c48ac8f00637e44d5f34980137e))
+* **commitlint:** fix local running of commit linter on macOS ([#427](https://github.com/tiborsimko/reana-ui/issues/427)) ([af8c32b](https://github.com/tiborsimko/reana-ui/commit/af8c32b510a227feb01fc43b3fa8b734087f1405))
+* **commitlint:** improve checking of merge commits ([#409](https://github.com/tiborsimko/reana-ui/issues/409)) ([c066472](https://github.com/tiborsimko/reana-ui/commit/c06647276d52807e29c0b382c819f6cd0513f562))
+* pin hadolint version ([d3dd143](https://github.com/tiborsimko/reana-ui/commit/d3dd1434a2e26644b31ed527a13619e9bda9a9b5))
+* publish docker image after new release ([bdbf705](https://github.com/tiborsimko/reana-ui/commit/bdbf705c59d42fb40f0473b9305d1f2cb0a633c8))
+* **release-please:** initial configuration ([#380](https://github.com/tiborsimko/reana-ui/issues/380)) ([db2e82b](https://github.com/tiborsimko/reana-ui/commit/db2e82b454ba80b93895835e7c95ae96f3ff5dc9))
+* **release-please:** switch to `simple` release strategy ([#383](https://github.com/tiborsimko/reana-ui/issues/383)) ([2c64085](https://github.com/tiborsimko/reana-ui/commit/2c64085dd8dc70ceaf775b527f5467ae297e09e5))
+* **release-please:** update version in package.json and Dockerfile ([#385](https://github.com/tiborsimko/reana-ui/issues/385)) ([5d232af](https://github.com/tiborsimko/reana-ui/commit/5d232aff36d1f795df1fc8736ae3825a2b763750))
+* **runners:** upgrade CI runners to Ubuntu 22.04 ([#422](https://github.com/tiborsimko/reana-ui/issues/422)) ([0e685f1](https://github.com/tiborsimko/reana-ui/commit/0e685f14f6ef7695b6ca7de6b1bf922e889005a3))
+* **runners:** upgrade CI runners to Ubuntu 22.04 ([#422](https://github.com/tiborsimko/reana-ui/issues/422)) ([e2061a9](https://github.com/tiborsimko/reana-ui/commit/e2061a91fc696b14569719d836e10b4f564b1a2b))
+* **shellcheck:** exclude node_modules from the analyzed paths ([#387](https://github.com/tiborsimko/reana-ui/issues/387)) ([8913e4d](https://github.com/tiborsimko/reana-ui/commit/8913e4dd58250bf30318539c8f75abda0b024e43))
+* **shellcheck:** fix exit code propagation ([#390](https://github.com/tiborsimko/reana-ui/issues/390)) ([7b5f29e](https://github.com/tiborsimko/reana-ui/commit/7b5f29ebc604a2d27d76f8a51b437c3e561fec32))
+* update all actions ([fa1417a](https://github.com/tiborsimko/reana-ui/commit/fa1417ac376a4e7d53cc9ca2be63eaefdcff4613))
+* use same node version as in dockerfile ([e37d4ee](https://github.com/tiborsimko/reana-ui/commit/e37d4ee6e1c346e4320144c9ba161b575f68393b))
+
+
+### Documentation
+
+* add .readthedocs.yaml to migrate to RTD v2 ([5cbcacc](https://github.com/tiborsimko/reana-ui/commit/5cbcacc582b78c99341099f6ed8bd8d780e09838))
+* add sso and gitlab integration sections ([6c82093](https://github.com/tiborsimko/reana-ui/commit/6c820932a9610d9f92978400f5e7477ccfe1a79d)), closes [#39](https://github.com/tiborsimko/reana-ui/issues/39)
+* adding package.json + logo-reana.png ([f002bd6](https://github.com/tiborsimko/reana-ui/commit/f002bd6ecd2fddb54e7157f9c3a9b77d4c4b9246))
+* adding run_test.sh + extending .gitignore ([fa223f8](https://github.com/tiborsimko/reana-ui/commit/fa223f8882a4c5f9d6463c98ff29ecc61d8a1144))
+* authors email change ([9633380](https://github.com/tiborsimko/reana-ui/commit/9633380adce09a31fc5562319fe15ae96ce2527f))
+* **authors:** complete list of contributors ([#396](https://github.com/tiborsimko/reana-ui/issues/396)) ([814d68e](https://github.com/tiborsimko/reana-ui/commit/814d68ef5e2103a5f33e0dcf97bd8ffd777db78f))
+* basic deployment guide ([072185b](https://github.com/tiborsimko/reana-ui/commit/072185bf90b84dac8a5626d17bc429c17346c833))
+* downgrade urllib3 ([ddb62ed](https://github.com/tiborsimko/reana-ui/commit/ddb62edc00712e62ea8a279bb54cdd507d226511))
+* fix readme shield URLs ([c2aa002](https://github.com/tiborsimko/reana-ui/commit/c2aa0024b8ce948b3d669855b589151af5eebe06))
+* fix rtfd build badge so it shows the real status ([d5b6289](https://github.com/tiborsimko/reana-ui/commit/d5b6289687857fa4e34c683911ede01b24826411))
+* get rid of REANA_GITLAB_OAUTH_REDIRECT_URL ([f6ee57e](https://github.com/tiborsimko/reana-ui/commit/f6ee57eca4f53d0e3b8e511a9e54e4876fad2c49))
+* including common reana .rst ([4d7c815](https://github.com/tiborsimko/reana-ui/commit/4d7c815b5bf4972d54ee91c1c47646ef138a8b52))
+* introducing Prettier ([c764510](https://github.com/tiborsimko/reana-ui/commit/c76451072c27e047abe23d0852a5fa568966dccc))
+* **readme:** update local development instructions ([#432](https://github.com/tiborsimko/reana-ui/issues/432)) ([9b80eaf](https://github.com/tiborsimko/reana-ui/commit/9b80eafba9c0766b558be8a06dfb569ca08cc024))
+* remove reana-cluster references ([8cd0a90](https://github.com/tiborsimko/reana-ui/commit/8cd0a907ade11e179025b1210345cd6e14b43d56))
+* remove vbox port forwarding section ([de71267](https://github.com/tiborsimko/reana-ui/commit/de71267f97e191740829e84c6cf1a7f8b7a1cdb2))
+* set default language to English ([8ac6852](https://github.com/tiborsimko/reana-ui/commit/8ac6852d7440349073c65530f2a982ac6f4c6790))
+* single-page RTFD outline ([b9ce1cf](https://github.com/tiborsimko/reana-ui/commit/b9ce1cf1b9fcffcd1fcf00a2a35007810092748a))
+
+
+### Chores
+
+* **master:** release 0.95.0-alpha.1 ([#419](https://github.com/tiborsimko/reana-ui/issues/419)) ([48ea4c3](https://github.com/tiborsimko/reana-ui/commit/48ea4c3afebc70f279661840f26835ea16f4b9c2))
+
 ## [0.9.4](https://github.com/reanahub/reana-ui/compare/0.9.3...0.9.4) (2024-03-04)
 
 
