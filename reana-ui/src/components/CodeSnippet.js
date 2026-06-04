@@ -9,13 +9,11 @@
 */
 
 import { useState } from "react";
-import { Icon, Popup } from "semantic-ui-react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Icon } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
+import CopyButton from "./CopyButton";
 import styles from "./CodeSnippet.module.scss";
-
-const COPY_CHECK_TIMEOUT = 1500;
 
 export default function CodeSnippet({
   children,
@@ -26,17 +24,7 @@ export default function CodeSnippet({
   dollarPrefix,
   classes,
 }) {
-  const [copied, setCopied] = useState(false);
   const [revealed, setRevealed] = useState(false);
-
-  const handleCopied = () => {
-    setCopied(true);
-
-    const timeout = setTimeout(() => {
-      setCopied(false);
-      clearTimeout(timeout);
-    }, COPY_CHECK_TIMEOUT);
-  };
 
   const toggleRevealed = () => {
     setRevealed(!revealed);
@@ -65,31 +53,27 @@ export default function CodeSnippet({
       >
         {children}
       </div>
-      {reveal && (
-        <Icon
-          name={revealed ? "eye slash" : "eye"}
-          className={styles["action-icon"]}
-          onClick={toggleRevealed}
-        />
-      )}
-      {copy && (
-        <Popup
-          trigger={
-            <CopyToClipboard
+      {(reveal || copy) && (
+        <div className={styles["actions"]}>
+          {reveal && (
+            <Icon
+              name={revealed ? "eye slash" : "eye"}
+              className={styles["action-icon"]}
+              onClick={toggleRevealed}
+            />
+          )}
+          {copy && (
+            <CopyButton
+              as={Icon}
+              className={styles["action-icon"]}
               text={accessChildren(children)
                 .map((line) => {
                   return Array.isArray(line) ? line.join("") : line;
                 })
                 .join("\n")}
-              onCopy={handleCopied}
-            >
-              <Icon name="copy outline" className={styles["action-icon"]} />
-            </CopyToClipboard>
-          }
-          content="Copied!"
-          open={copied}
-          inverted
-        />
+            />
+          )}
+        </div>
       )}
     </div>
   );

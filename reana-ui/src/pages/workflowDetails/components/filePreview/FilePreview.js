@@ -11,12 +11,14 @@
 import sortBy from "lodash/sortBy";
 import PropTypes from "prop-types";
 import { Suspense, lazy, useEffect, useState } from "react";
+import { useLocation, useNavigationType } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, Icon, Loader, Message, Modal } from "semantic-ui-react";
 
 import client, { WORKFLOW_FILE_URL } from "~/client";
 import { getConfig } from "~/selectors";
-import { formatFileSize, getMimeType } from "~/util";
+import { formatFileSize, getMimeType, parseFiles } from "~/util";
+import { CopyButton } from "~/components";
 
 import styles from "./FilePreview.module.scss";
 
@@ -167,33 +169,115 @@ function getFileURL(workflow, fileName, preview = true) {
   return WORKFLOW_FILE_URL(workflow, fileName, { preview });
 }
 
-export default function FilePreview({ workflow, fileName, size, onClose }) {
+export default function FilePreview({ workflow, fileName, onClose }) {
   const config = useSelector(getConfig);
+  const location = useLocation();
+  const isSharedLink = !location.state?.internal;
+  const [size, setSize] = useState(null);
+  const [error, setError] = useState(null);
+  const shareUrl = `${window.location.origin}/workflows/${workflow}/workspace?name=${encodeURIComponent(fileName)}`;
+  const navigationType = useNavigationType();
+
+  useEffect(() => {
+    const stateSize = location.state?.size;
+    if (stateSize !== undefined && navigationType === "PUSH") {
+      setSize(stateSize);
+      return;
+    }
+    setSize(null);
+    setError(null);
+    client
+      .getWorkflowFiles(
+        workflow,
+        { page: 1, size: 1, file_name: fileName },
+        JSON.stringify({ name: [fileName] }),
+      )
+      .then((resp) => {
+        const items = parseFiles(resp.data.items ?? []);
+        const match = items.find((f) => f.name === fileName);
+        if (match === undefined) {
+          throw new Error("File not found");
+        }
+        setSize(match?.size?.raw ?? 0);
+      })
+      .catch((err) => {
+        setError(err);
+        setSize(0);
+      });
+  }, [workflow, fileName, location.state, navigationType]);
 
   let preview = null;
-  // Check whether the file can be previewed
-  const message = checkConstraints(fileName, size, config.filePreviewSizeLimit);
-  if (message) {
-    preview = <Modal.Content scrolling>{message}</Modal.Content>;
-  } else {
-    const mimeType = matchesMimeType(
-      Object.keys(PREVIEW_MIME_PREFIX_WHITELIST),
-      fileName,
-    );
-    const Preview = PREVIEW_MIME_PREFIX_WHITELIST[mimeType];
+
+  if (error && isSharedLink) {
     preview = (
-      <Preview
-        workflow={workflow}
-        fileName={fileName}
-        size={size}
-        url={getFileURL(workflow, fileName)}
-      />
+      <Modal.Content>
+        <Message
+          icon="exclamation triangle"
+          content="This file cannot be previewed. It may have been removed from this workspace or you may not have access to it anymore."
+          warning
+        />
+      </Modal.Content>
     );
+  } else if (error && !isSharedLink) {
+    preview = (
+      <Modal.Content>
+        <Message
+          icon="exclamation triangle"
+          content="An error occurred while loading the file preview. Please try again later or use the download button."
+          warning
+        />
+      </Modal.Content>
+    );
+  } else if (size === null) {
+    preview = (
+      <Modal.Content>
+        <Loader
+          active
+          className={styles["dark-loader"]}
+          inline="centered"
+          content="Loading file preview..."
+        />
+      </Modal.Content>
+    );
+  } else {
+    const message = checkConstraints(
+      fileName,
+      size,
+      config.filePreviewSizeLimit,
+    );
+    if (message) {
+      preview = <Modal.Content scrolling>{message}</Modal.Content>;
+    } else {
+      const mimeType = matchesMimeType(
+        Object.keys(PREVIEW_MIME_PREFIX_WHITELIST),
+        fileName,
+      );
+      const Preview = PREVIEW_MIME_PREFIX_WHITELIST[mimeType];
+      preview = (
+        <Preview
+          workflow={workflow}
+          fileName={fileName}
+          size={size}
+          url={getFileURL(workflow, fileName)}
+        />
+      );
+    }
   }
 
   return (
     <Modal open closeIcon onClose={onClose ? onClose : () => {}}>
       <Modal.Header>{fileName}</Modal.Header>
+      {isSharedLink && !error && (
+        <Modal.Content>
+          <Modal.Description>
+            <Message
+              icon="info circle"
+              content="Workspace files can change over time — you're viewing the current version of this file."
+              info
+            />
+          </Modal.Description>
+        </Modal.Content>
+      )}
       <Suspense
         fallback={
           <Modal.Content>
@@ -208,11 +292,14 @@ export default function FilePreview({ workflow, fileName, size, onClose }) {
       >
         {preview}
       </Suspense>
-      <Modal.Actions>
-        <Button primary as="a" href={getFileURL(workflow, fileName, false)}>
-          <Icon name="download" /> Download
-        </Button>
-      </Modal.Actions>
+      {!error && (
+        <Modal.Actions>
+          <CopyButton text={shareUrl} label="Copy link" icon="linkify" />
+          <Button primary as="a" href={getFileURL(workflow, fileName, false)}>
+            <Icon name="download" /> Download
+          </Button>
+        </Modal.Actions>
+      )}
     </Modal>
   );
 }
@@ -220,6 +307,5 @@ export default function FilePreview({ workflow, fileName, size, onClose }) {
 FilePreview.propTypes = {
   workflow: PropTypes.string.isRequired,
   fileName: PropTypes.string.isRequired,
-  size: PropTypes.number.isRequired,
   onClose: PropTypes.func,
 };
