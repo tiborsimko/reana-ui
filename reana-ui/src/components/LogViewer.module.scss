@@ -1,0 +1,150 @@
+/*
+  -*- coding: utf-8 -*-
+
+  This file is part of REANA.
+  Copyright (C) 2026 CERN.
+
+  REANA is free software; you can redistribute it and/or modify it
+  under the terms of the MIT License; see LICENSE file for more details.
+*/
+
+@import "@palette";
+
+.container {
+  position: relative;
+  margin: 1em 0;
+}
+
+.viewport {
+  width: 100%;
+  overflow: auto;
+  background-color: $sepia;
+  color: $dark-blue;
+  font-family: "Consolas", "Monaco", "Courier New", Courier, monospace;
+  line-height: 28px;
+  tab-size: 4;
+  white-space: pre;
+}
+
+.canvas {
+  position: relative;
+}
+
+.search-trigger {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid darken($sepia, 12%);
+  border-radius: 4px;
+  background-color: $white;
+  color: $dark-blue;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  opacity: 0.9;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+    background-color: darken($sepia, 5%);
+  }
+
+  :global(.icon) {
+    margin: 0;
+  }
+}
+
+.copy-action:global(.ui.button) {
+  // Sticky (not absolute) so the button stays pinned to the left of the gutter
+  // while scrolling long lines horizontally. The negative right margin cancels
+  // its flex footprint (so the line number isn't pushed over), and the top
+  // margin replaces a vertical inset so it still scrolls with its line.
+  position: sticky;
+  z-index: 2;
+  left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  margin: 3px -22px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background-color: $dark-blue !important;
+  color: $sepia !important;
+  cursor: pointer;
+  opacity: 0.8;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+
+  :global(.icon) {
+    margin: 0;
+  }
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+
+  &.selected {
+    background-color: lighten($sui-yellow, 35%);
+
+    .line-number {
+      background-color: lighten($sui-yellow, 35%);
+    }
+  }
+}
+
+.line-number {
+  // Stick to the left edge so line numbers stay visible while scrolling long
+  // lines horizontally. The opaque background hides the content scrolling under.
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  padding-right: 1ch;
+  padding-left: 32px;
+  border-right: 1px solid darken($sepia, 10%);
+  background-color: $sepia;
+  color: lighten($dark-blue, 30%);
+  text-align: right;
+  text-decoration: none;
+  user-select: none;
+
+  &:hover,
+  &:focus {
+    color: $dark-blue;
+    text-decoration: underline;
+  }
+}
+
+.content {
+  padding-left: 1ch;
+}
+
+.mark {
+  padding: 0;
+  border-radius: 2px;
+  background-color: $sui-yellow;
+  color: $dark-blue;
+
+  &.mark-current {
+    background-color: #f2711c;
+    color: $white;
+  }
+}

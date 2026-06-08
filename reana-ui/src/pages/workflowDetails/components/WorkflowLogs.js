@@ -2,14 +2,14 @@
 	-*- coding: utf-8 -*-
 
 	This file is part of REANA.
-	Copyright (C) 2020, 2022, 2025 CERN.
+	Copyright (C) 2020, 2022, 2025, 2026 CERN.
 
   REANA is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
 */
 
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Dropdown, Label, Loader, Message } from "semantic-ui-react";
@@ -18,16 +18,14 @@ import { fetchWorkflowLogs } from "~/actions";
 import { NON_FINISHED_STATUSES } from "~/config";
 import { statusMapping } from "~/util";
 import { getWorkflowLogs, loadingDetails } from "~/selectors";
-import { CodeSnippet, TooltipIfTruncated } from "~/components";
+import { LogViewer, TooltipIfTruncated } from "~/components";
 
 import styles from "./WorkflowLogs.module.scss";
 
 function EngineLogs({ logs, workflowStatus }) {
   const isExecuting = NON_FINISHED_STATUSES.includes(workflowStatus);
   return logs ? (
-    <CodeSnippet dollarPrefix={false} classes={styles.logs}>
-      {logs}
-    </CodeSnippet>
+    <LogViewer logs={logs} className={styles.logs} />
   ) : (
     <Message
       icon="info circle"
@@ -55,6 +53,7 @@ function ServiceLogs({ isDask, components, workflowStatus }) {
   const [selectedComponentIndex, setSelectedComponentIndex] = useState("");
   const { id: workflowId, job: componentFromPath } = useParams();
   const navigate = useNavigate();
+  const { hash } = useLocation();
   const serviceLogsPath = `/workflows/${workflowId}/service-logs`;
 
   // Keep dropdown selection and URL in sync (must run before any early return to satisfy hooks rule)
@@ -80,15 +79,17 @@ function ServiceLogs({ isDask, components, workflowStatus }) {
     }
     // Standardize URL to first component when missing/invalid
     navigate(
-      `${serviceLogsPath}/${encodeURIComponent(components[0].component)}`,
+      `${serviceLogsPath}/${encodeURIComponent(components[0].component)}${hash}`,
       { replace: true },
     );
   }, [
     isDask,
     isExecuting,
+    hasComponents,
     components,
     componentFromPath,
     serviceLogsPath,
+    hash,
     navigate,
     selectedComponentIndex,
   ]);
@@ -164,9 +165,11 @@ function ServiceLogs({ isDask, components, workflowStatus }) {
         </div>
       </section>
       {components?.[selectedComponentIndex]?.content ? (
-        <CodeSnippet dollarPrefix={false} classes={styles.logs}>
-          {components[selectedComponentIndex].content}
-        </CodeSnippet>
+        <LogViewer
+          key={selectedComponentIndex}
+          logs={components[selectedComponentIndex].content}
+          className={styles.logs}
+        />
       ) : (
         <Message
           icon="info circle"
@@ -187,6 +190,7 @@ ServiceLogs.propTypes = {
 function JobLogs({ logs }) {
   const { id: workflowId, job: jobFromPath } = useParams();
   const navigate = useNavigate();
+  const { hash } = useLocation();
 
   // Standardize selector: path /workflows/:id/job-logs/:job where :job = backend_job_id
   const urlBackendId = jobFromPath || undefined;
@@ -208,7 +212,7 @@ function JobLogs({ logs }) {
     if (!nextId) return;
     const exists = allJobs.some((l) => l.backend_job_id === nextId);
     if (exists && nextId !== selectedJobId) {
-      selectedJobId(nextId);
+      setSelectedJobId(nextId);
     }
   }, [jobFromPath, selectedJobId, allJobs]);
 
@@ -220,10 +224,10 @@ function JobLogs({ logs }) {
     if (invalidParam) {
       const base = `/workflows/${workflowId}/job-logs`;
       const fallback = defaultBackendId || null;
-      const target = fallback ? `${base}/${fallback}` : base;
+      const target = fallback ? `${base}/${fallback}${hash}` : `${base}${hash}`;
       navigate(target, { replace: true });
     }
-  }, [urlBackendId, allJobs, defaultBackendId, workflowId, navigate]);
+  }, [urlBackendId, allJobs, defaultBackendId, workflowId, hash, navigate]);
 
   // Ensure selectedJobId always matches an existing job
   useEffect(() => {
@@ -311,9 +315,11 @@ function JobLogs({ logs }) {
         )}
       </section>
       {log && (
-        <CodeSnippet dollarPrefix={false} classes={styles.logs}>
-          {log.logs}
-        </CodeSnippet>
+        <LogViewer
+          key={log.backend_job_id}
+          logs={log.logs}
+          className={styles.logs}
+        />
       )}
     </>
   );
