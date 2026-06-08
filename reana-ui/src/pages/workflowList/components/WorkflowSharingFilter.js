@@ -2,7 +2,7 @@
   -*- coding: utf-8 -*-
 
   This file is part of REANA.
-  Copyright (C) 2023 CERN.
+  Copyright (C) 2023, 2024, 2025, 2026 CERN.
 
   REANA is free software; you can redistribute it and/or modify it
   under the terms of the MIT License; see LICENSE file for more details.
@@ -26,17 +26,14 @@ const sharingFilterOptions = [
 ];
 
 export default function WorkflowSharingFilters({
-  ownedByFilter,
-  setOwnedByFilter,
-  sharedWithFilter,
-  sharedWithMode,
-  setSharedWithFilter,
-  setSharedWithModeInUrl,
+  ownedBy,
+  sharedWith,
+  setSharing,
 }) {
   const dispatch = useDispatch();
-  // Initial mode comes from URL
+  const isSharedWithMode = sharedWith !== undefined;
   const [selectedFilterOption, setSelectedFilterOption] = useState(
-    sharedWithMode ? SHARED_WITH : OWNED_BY,
+    isSharedWithMode ? SHARED_WITH : OWNED_BY,
   );
 
   const usersYouSharedWith = useSelector(getUsersYouSharedWith, _.isEqual);
@@ -46,8 +43,8 @@ export default function WorkflowSharingFilters({
     () => [
       { key: "you", text: "you", value: "you" },
       { key: "anybody", text: "anybody", value: "anybody" },
-      ...usersSharedWithYou.map((user, index) => ({
-        key: index,
+      ...usersSharedWithYou.map((user) => ({
+        key: user.email,
         text: user.email,
         value: user.email,
       })),
@@ -58,8 +55,8 @@ export default function WorkflowSharingFilters({
   const usersYouSharedWithOptions = useMemo(
     () => [
       { key: "anybody", text: "anybody", value: "anybody" },
-      ...usersYouSharedWith.map((user, index) => ({
-        key: index,
+      ...usersYouSharedWith.map((user) => ({
+        key: user.email,
         text: user.email,
         value: user.email,
       })),
@@ -68,55 +65,46 @@ export default function WorkflowSharingFilters({
   );
 
   const [selectedUser, setSelectedUser] = useState(() =>
-    sharedWithMode ? "anybody" : usersSharedWithYouOptions[0].value,
+    isSharedWithMode ? (sharedWith ?? "anybody") : (ownedBy ?? "you"),
   );
 
   useEffect(() => {
-    dispatch(fetchUsersYouSharedWith());
-    dispatch(fetchUsersSharedWithYou());
-  }, [dispatch]);
+    if (usersYouSharedWith.length === 0) {
+      dispatch(fetchUsersYouSharedWith());
+    }
+    if (usersSharedWithYou.length === 0) {
+      dispatch(fetchUsersSharedWithYou());
+    }
+  }, [dispatch, usersSharedWithYou.length, usersYouSharedWith.length]);
 
   // Keep the dropdown value aligned with URL
   useEffect(() => {
     if (selectedFilterOption === OWNED_BY) {
-      setSelectedUser(ownedByFilter ?? usersSharedWithYouOptions[0].value);
+      setSelectedUser(ownedBy ?? "you");
     } else {
-      setSelectedUser(sharedWithFilter ?? "anybody");
+      setSelectedUser(sharedWith ?? "anybody");
     }
-  }, [
-    selectedFilterOption,
-    ownedByFilter,
-    sharedWithFilter,
-    usersSharedWithYouOptions,
-  ]);
+  }, [selectedFilterOption, ownedBy, sharedWith]);
 
   // Reflect URL back if user edited the URL manually
   useEffect(() => {
-    setSelectedFilterOption(sharedWithMode ? SHARED_WITH : OWNED_BY);
-  }, [sharedWithMode]);
+    setSelectedFilterOption(isSharedWithMode ? SHARED_WITH : OWNED_BY);
+  }, [isSharedWithMode]);
 
   const handleSelectedFilterOptionChange = (_, { value }) => {
     setSelectedFilterOption(value);
-
     if (value === OWNED_BY) {
-      setOwnedByFilter("you");
-      setSharedWithFilter(undefined);
-      setSelectedUser("you");
-      setSharedWithModeInUrl(false);
+      setSharing("you", undefined);
     } else {
-      setSharedWithFilter("anybody");
-      setSelectedUser("anybody");
-      setSharedWithModeInUrl(true);
+      setSharing(undefined, "anybody");
     }
   };
 
   const handleSelectedUserChange = (_, { value }) => {
     if (selectedFilterOption === OWNED_BY) {
-      setOwnedByFilter(value);
-      setSharedWithFilter(undefined);
+      setSharing(value, undefined);
     } else {
-      setSharedWithFilter(value);
-      setOwnedByFilter(undefined);
+      setSharing(undefined, value);
     }
   };
 
@@ -151,9 +139,7 @@ export default function WorkflowSharingFilters({
 }
 
 WorkflowSharingFilters.propTypes = {
-  ownedByFilter: PropTypes.string,
-  setOwnedByFilter: PropTypes.func.isRequired,
-  sharedWithFilter: PropTypes.string,
-  sharedWithMode: PropTypes.bool,
-  setSharedWithFilter: PropTypes.func.isRequired,
+  ownedBy: PropTypes.string,
+  sharedWith: PropTypes.string,
+  setSharing: PropTypes.func.isRequired,
 };
